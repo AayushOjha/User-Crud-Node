@@ -4,7 +4,8 @@ const app = express()
 const mongoose = require('mongoose')
 const cors = require('cors')
 
-// const authRoute = require('./src/routes/auth')
+const authRoute = require('./src/routes/auth')
+
 const { DatabaseConnectionString } = require('./src/utils/constants')
 
 mongoose
@@ -21,7 +22,7 @@ app.use(
 )
 
 // Routes
-// app.use('/api/auth', authRoute)
+app.use('/api/auth', authRoute)
 
 app.listen(process.env.PORT || 3006, () => {
   console.log(`Server listening on ${process.env.PORT || 3006}`)
