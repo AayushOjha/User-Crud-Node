@@ -24,3 +24,13 @@ exports.addContact = async (req, res) => {
     res.status(500).json({ message: 'Error adding contact', error: error })
   }
 }
+
+exports.updateContact = async (req, res) => {
+  try {
+    debugger
+    await Contact.findOneAndUpdate({ _id: req.params.id }, { $set: req.body })
+    this.getAllContactsForCustomer(req, res)
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating contact', error: error })
+  }
+}
