@@ -5,8 +5,14 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const authRoute = require('./src/routes/auth')
+const customerRoute = require('./src/routes/customer')
+const { verifyToken } = require('./src/middlewares/verifyToken')
 
-const { DatabaseConnectionString } = require('./src/utils/constants')
+const {
+  DatabaseConnectionString,
+  UnprotectedRoutes
+} = require('./src/utils/constants')
+const { includes } = require('lodash')
 
 mongoose
   .connect(DatabaseConnectionString)
@@ -21,11 +27,21 @@ app.use(
   })
 )
 
+// Middlewares
+app.use((req, res, next) => {
+  if (includes(UnprotectedRoutes, req.path)) {
+    next()
+  } else {
+    verifyToken(req, res, next)
+  }
+})
+
 // Routes
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
 })
 app.use('/api/auth', authRoute)
+app.use('/api/customer', customerRoute)
 
 app.listen(process.env.PORT || 3006, () => {
   console.log(`Server listening on ${process.env.PORT || 3006}`)
