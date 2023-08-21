@@ -2,6 +2,8 @@ const _ = require('lodash')
 const AES = require('crypto-js/aes')
 const utf = require('crypto-js/enc-utf8')
 
+const { generateToken } = require('../utils/helpers/tokenGenerator')
+
 const Customer = require('../models/Customer')
 
 exports.register = async (req, res) => {
@@ -31,29 +33,19 @@ exports.register = async (req, res) => {
     })
 }
 
-// exports.signIn = async (req, res) => {
-//   const { username, password } = req.body
-//   const user = await Customer.findOne({ username })
-//   if (!user) {
-//     return res.status(401).json({ message: 'Invalid username or password' })
-//   }
-//   const decryptedPassword = AES.decrypt(
-//     user.password,
-//     process.env.PASSWORD_HASHING_KEY
-//   ).toString(utf)
-//   if (password !== decryptedPassword) {
-//     return res.status(401).json({ message: 'Invalid username or password' })
-//   }
-//   const token = generateToken(req.body)
-//   res.json({ message: 'Successfully signed in', token: token })
-// }
-
-// exports.customerDetails = async (req, res) => {
-//   const username = req.user.username
-//   const user = await Customer.findOne({ username }).exec()
-//   if (username == 'admin') {
-//     // user.isAdmin = true
-//     console.log(user)
-//   }
-//   res.json(user)
-// }
+exports.signIn = async (req, res) => {
+  const { email, password } = req.body
+  const user = await Customer.findOne({ email })
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' })
+  }
+  const decryptedPassword = AES.decrypt(
+    user.password,
+    process.env.PASSWORD_HASHING_KEY
+  ).toString(utf)
+  if (password !== decryptedPassword) {
+    return res.status(401).json({ message: 'Invalid email or password' })
+  }
+  const token = generateToken(req.body)
+  res.json({ message: 'Successfully signed in', token: token })
+}
