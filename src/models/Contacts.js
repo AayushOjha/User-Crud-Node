@@ -12,10 +12,14 @@ const addressSchema = new mongoose.Schema({
 
 const contactsSchema = new Schema(
   {
-    customerId: { type: Schema.Types.ObjectId, ref: 'Customer', require: true },
-    name: { type: String, require: true },
-    email: { type: String, require: true },
-    phone: { type: String, require: true },
+    customerId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Customer',
+      required: true
+    },
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
     address: addressSchema // Embed the address subdocument
   },
   { timestamps: true }

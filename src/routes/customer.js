@@ -4,6 +4,6 @@ const customerController = require('../controllers/customerController')
 
 router.get('/get_contacts', customerController.getAllContactsForCustomer)
 
-// router.post('/sign_in', signInFormValidator, authController.signIn)
+router.post('/add_contact', customerController.addContact)
 
 module.exports = router
