@@ -22,6 +22,9 @@ app.use(
 )
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('Hey this is my API running 🥳')
+})
 app.use('/api/auth', authRoute)
 
 app.listen(process.env.PORT || 3006, () => {
