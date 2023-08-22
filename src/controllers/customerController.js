@@ -34,3 +34,12 @@ exports.updateContact = async (req, res) => {
     res.status(500).json({ message: 'Error updating contact', error: error })
   }
 }
+
+exports.deleteContact = async (req, res) => {
+  try {
+    await Contact.findOneAndDelete({ _id: req.params.id })
+    this.getAllContactsForCustomer(req, res)
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting contact', error: error })
+  }
+}
